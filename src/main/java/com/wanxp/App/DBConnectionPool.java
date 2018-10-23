@@ -1,11 +1,18 @@
 package com.wanxp.App;
 
+import javax.sql.PooledConnection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 /**
  *  自定义数据库连接池
  */
 public class DBConnectionPool {
+    private static final Logger LOGGER = Logger.getLogger(DBConnectionPool.class.getName());
+
     private String jdbcDriver = ""; //数据库驱动
     private String dbUrl = "";//数据库url
     private String dbUserName = "";//数据库账户
@@ -61,6 +68,40 @@ public class DBConnectionPool {
         this.maxConnections = maxConnections;
     }
 
+    /**
+     * 创建连接池容器
+     * @throws Exception
+     */
+    public  synchronized void createPool() throws  Exception {
+        if (connections != null)
+            return;
+        Driver driver = (Driver) (Class.forName(this.jdbcDriver).newInstance());
+        DriverManager.registerDriver(driver);
+        connections = new Vector();
+        createConnections(this.initalConnections);
+        LOGGER.info("DB Connection Pool create successed!");
+    }
+
+    /**
+     * 创建连接并加入至连接池
+     * @param numConnections
+     * @throws Exception
+     */
+    private void createConnections(int numConnections) throws Exception{
+        for (int i = 0;i < numConnections;i++) {
+            if (this.maxConnections <=0 || this.connections.size() > this.maxConnections)
+                break;
+            try {
+//                connections.addElement(new PooledConnection(newConnection()));
+            }catch (SQLException e) {
+                LOGGER.log(Logger.);
+            }
+        }
+    }
+
+    private Object newConnection() {
+
+    }
 
 
 }
