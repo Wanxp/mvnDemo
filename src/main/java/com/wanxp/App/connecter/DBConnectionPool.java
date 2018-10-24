@@ -22,7 +22,7 @@ public class DBConnectionPool {
     private int initalConnections = 10;//初始连接池大小
     private int maxConnections = 50; //最大连接池大小
     private Vector connections = null;//连接池存放向量
-    private int incrementalConnections = 5;
+    private int incrementalConnections = 5;//每次新增连接的数量
 
     /**
      * 连接池构造方法
@@ -69,6 +69,23 @@ public class DBConnectionPool {
     public void setMaxConnections(int maxConnections) {
         this.maxConnections = maxConnections;
     }
+
+    /**
+     * 获取每次自增连接池数量
+     * @return
+     */
+    public int getIncrementalConnections() {
+        return incrementalConnections;
+    }
+
+    /**
+     * 设置每次自增连接池数量
+     * @param incrementalConnections
+     */
+    public void setIncrementalConnections(int incrementalConnections) {
+        this.incrementalConnections = incrementalConnections;
+    }
+
 
     /**
      * 创建连接池容器
@@ -168,7 +185,7 @@ public class DBConnectionPool {
                     try {
                         connection = newConnection();
                     }catch (SQLException e) {
-                        LOGGER.error("DB Connection create fail! ERROR_MESSAGE" + e.getMessage());
+                        LOGGER.error("DB Connection create fail!", e);
                         return null;
                     }
                 }
@@ -188,7 +205,7 @@ public class DBConnectionPool {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            LOGGER.error("DB Connection connection test fail! ERROR_MESSAGE:" + e.getMessage());
+            LOGGER.error("DB Connection connection test fail!", e);
             closeConnection(connection);
             return false;
         }
@@ -203,7 +220,7 @@ public class DBConnectionPool {
         try {
             connection.close();
         }catch (SQLException e) {
-            LOGGER.error("DB Connection can not closed! ERROR_MESSAGE:" + e.getMessage());
+            LOGGER.error("DB Connection can not closed!", e);
         }
     }
 
@@ -227,7 +244,7 @@ public class DBConnectionPool {
      * 关闭连接池
      * @throws SQLException
      */
-    private void closeConnectionPool() {
+    public void closeConnectionPool() {
         if (connections == null) {
             LOGGER.warn("DB Connections is null and it can not closed");
             return;
@@ -275,7 +292,7 @@ public class DBConnectionPool {
         try {
             Thread.sleep(mSeconds);
         }catch (InterruptedException e) {
-            LOGGER.error("wait fail!");
+            LOGGER.error("wait fail!", e);
         }
     }
 }

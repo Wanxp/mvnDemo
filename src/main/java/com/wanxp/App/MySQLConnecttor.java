@@ -7,7 +7,7 @@ public class MySQLConnecttor {
     private static String DB_URL = "jdbc:mysql://localhost:3306/testimport?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     private static String USER = "root";
-    private static String PASSWORD = "0001";
+    private static String PASSWORD = "9111";
 
     private static MySQLConnecttor connecttor = null;
 
