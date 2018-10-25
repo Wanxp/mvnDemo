@@ -190,8 +190,9 @@ public class DBConnectionPool {
                     }
                 }
                 pooledConnection.setConnection(connection);
+                break;
             }
-            break;
+
         }
         return connection;
     }
