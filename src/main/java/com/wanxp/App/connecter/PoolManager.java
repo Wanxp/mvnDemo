@@ -15,9 +15,10 @@ public class PoolManager implements Pool{
     private static PoolManager poolManager = new PoolManager();
     private static DBConnectionPool pool = null;
     private static String jdbcDriver = "com.mysql.jdbc.Driver"; //数据库驱动
-    private static String dbUrl = "jdbc:mysql://localhost:3306/wifiDB?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
+    private static String dbUrl = "jdbc:mysql://localhost:32773/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
+//    private static String dbUrl = "jdbc:mysql://localhost:3306";//数据库url
     private static String dbUserName = "root";//数据库账户
-    private static String dbPassword = "9111";//数据库密码
+    private static String dbPassword = "0001";//数据库密码
 
     /**
      * 构造器
