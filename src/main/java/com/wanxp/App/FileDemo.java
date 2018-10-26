@@ -30,21 +30,7 @@ public class FileDemo {
         });
        files.forEach(x -> {
            try {
-               int[] lengths = readFileByLines(x);
-               Arrays.sort(lengths);
-               int j = 1;
-               for (int i = 0; i < lengths.length-1;i++) {
-                   if (lengths[i] == lengths[i+1]) {
-                       j++;
-                   }else {
-                       System.out.println(lengths[i] + "  count : " + j);
-                       j = 1;
-                   }
-               }
-               System.out.println("--------------------------------------fileEnd-----------------------------------------");
-               System.out.println("--------------------------------------fileEnd-----------------------------------------");
-               System.out.println("--------------------------------------fileEnd-----------------------------------------");
-               System.out.println("--------------------------------------fileEnd-----------------------------------------");
+               readFileByLines(x);
            } catch (IOException e) {
                e.printStackTrace();
            }
@@ -53,7 +39,7 @@ public class FileDemo {
     }
 
 
-    public static int[] readFileByLines(File file) throws IOException {
+    public static BufferedWriter readFileByLines(File file) throws IOException {
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(file));
         int line = 1;
@@ -61,22 +47,15 @@ public class FileDemo {
         File writename = new File("/home/wanxp/IdeaProjects/mvnDemo/static_source/target/" + file.getName()  + ".txt");
         writename.createNewFile();
         BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-        int[] lengths =new int[1261360];
-        int i=0;
         while ((tempString = reader.readLine()) != null) {
-//            if (tempString.length() > 200) continue;;
             tempString = tempString.replaceAll("Ip-address", " ")
                     .replaceAll("pageType"," ")
                     .replaceAll("datetime"," ")
                     .replaceAll("username"," ")
                     .replaceAll("customName"," ");
             out.write(tempString + "\n");
-            lengths[i] = tempString.length();
-            i++;
         }
-        out.flush();
-        out.close();
-        return lengths;
+        return out;
     }
 
 }

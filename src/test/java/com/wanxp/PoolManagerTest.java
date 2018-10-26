@@ -37,4 +37,50 @@ public class PoolManagerTest extends TestCase {
         System.out.println(System.currentTimeMillis() - start);
 
     }
+
+    public void testPoolCreateTable() {
+        long start = System.currentTimeMillis();
+        PoolManager pool = PoolManager.getInstance();
+        pool.initPool();
+        Connection connection = pool.getConnection();
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0;i < 10;i++) {
+
+            try {
+                statement.execute("CREATE TABLE if not exists pv_hour_" + i + " (\n" +
+                        "                nas_port_id varchar(125) NOT NULL,\n" +
+                        "                ip_address varchar(50),\n" +
+                        "                page_type smallint(6) NOT NULL,\n" +
+                        "                datetime varchar(30) DEFAULT NULL,\n" +
+                        "                username varchar(50) DEFAULT NULL,\n" +
+                        "                custom_name varchar(50) DEFAULT NULL\n" +
+                        "                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(System.currentTimeMillis() - start);
+    }
+
+    public void testLoadFile() {
+        PoolManager poolManager = PoolManager.getInstance();
+        poolManager.initPool();
+        Connection connection = poolManager.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("LOAD DATA LOCAL INFILE 'file.txt'"
+                    + "INTO TABLE pv_hour_0 " +
+                    " LINES START BY '' +" +
+                    "LINES TERMINATED BY '\\n'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
