@@ -17,35 +17,21 @@ import java.util.LinkedList;
  */
 public class AppNormal
 {
-    private static int num = 0;
     public static void main( String[] args ) throws SQLException {
         long start = System.currentTimeMillis();
-//        PoolManager pool = PoolManager.getInstance();
-//        pool.initPool();
-//        for (int i = 0;i < 10;i++) {
-//            StringBuilder sb = new StringBuilder();
-//               sb.append("CREATE TABLE if not exists  `pv_hour_").append(i).append("` (\n" +
-//                    "`nas_port_id` varchar(125) NOT NULL,\n" +
-//                    "`ip_address` varchar(50),\n" +
-//                    "`page_type` smallint(6) NOT NULL,\n" +
-//                    "`datetime` varchar(30) DEFAULT NULL,\n" +
-//                    "`username` varchar(50) DEFAULT NULL,\n" +
-//                    "`custom_name` varchar(50) DEFAULT NULL\n" +
-//                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
-//            Connection connection = pool.getConnection();
-//            PreparedStatement statement = connection.prepareStatement(sb.toString());
-//            statement.execute();
-//        }
-        File pathFile = new File("/media/hugh/Windows/Users/hugh/Downloads/数据");
-
+        File pathFile = new File("C:\\Users\\hugh\\Downloads\\数据");
         File[] files = pathFile.listFiles();
-        LinkedList fileList = new LinkedList();
+
+        //初始化连接池从数据库中获取数据库连接
+        PoolManager poolManager= PoolManager.getInstance();
+        poolManager.initPool();
         Arrays.stream(files).filter(x -> x.isFile()).forEach(file -> {
                 try {
-                    num++;
-                    System.out.println("File " + num + " is handle");
+                    System.out.println("File " + file.getName() + " is handle");
                     try {
                         LoadDataToSQL.loadFileToSQLByLines(file);
+//                        LoadDataToSQL.loadFileToSQLByLinesOpr1(file);
+//                        LoadDataToSQL.loadFileToSQLByBytes(file);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -55,5 +41,6 @@ public class AppNormal
             }
         );
         System.out.println("总耗时: " + (System.currentTimeMillis() - start));
+        poolManager.closeConnectionPool();
     }
 }

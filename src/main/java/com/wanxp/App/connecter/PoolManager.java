@@ -15,11 +15,11 @@ public class PoolManager implements Pool{
     private static PoolManager poolManager = new PoolManager();
     private static DBConnectionPool pool = null;
     private static String jdbcDriver = "com.mysql.jdbc.Driver"; //数据库驱动
-//    private static String dbUrl = "jdbc:mysql://localhost:32773/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
-    private static String dbUrl = "jdbc:mysql://localhost:3306/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
+    private static String dbUrl = "jdbc:mysql://localhost:32773/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
+//    private static String dbUrl = "jdbc:mysql://localhost:3306/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";//数据库url
 //    private static String dbUrl = "jdbc:mysql://localhost:3306";//数据库url
     private static String dbUserName = "root";//数据库账户
-    private static String dbPassword = "9111";//数据库密码
+    private static String dbPassword = "0001";//数据库密码
 
     /**
      * 构造器
@@ -98,6 +98,22 @@ public class PoolManager implements Pool{
     public void initPool() {
         try {
             pool.createPool();
+        } catch (Exception e) {
+            LOGGER.error("DB Connection pool create failed.", e);
+        }
+    }
+
+    /**
+     * 带参初始化
+     * @param jdbcDriver
+     * @param dbUrl
+     * @param dbUserName
+     * @param dbPassword
+     */
+    public void initPool(String jdbcDriver, String dbUrl, String dbUserName, String dbPassword) {
+        try {
+            pool = new DBConnectionPool(jdbcDriver, dbUrl, dbUserName, dbPassword);
+            initPool();
         } catch (Exception e) {
             LOGGER.error("DB Connection pool create failed.", e);
         }
