@@ -11,16 +11,17 @@ import java.util.LinkedList;
 
 public class LoadDataToMySQLTest extends TestCase {
     private static int num = 0;
-
+    private String pathStr = "D:\\BaiduYunDownload\\20160319\\wifi";
+//    private String pathStr =
     private static int THREAD_MAX = 10;
     public void testLoadFileToSQLByLines() {
 
-        File pathFile = new File("D:\\BaiduYunDownload\\20160319\\wifi");
+        File pathFile = new File(pathStr);
 
         File[] files = pathFile.listFiles();
         LinkedList fileList = new LinkedList();
         Arrays.stream(files).filter(x -> x.isFile()).forEach(file -> {
-            new Thread (() -> {
+//            new Thread (() -> {
                 try {
                     num++;
                     System.out.println("Thread " + num + " is run");
@@ -30,7 +31,7 @@ public class LoadDataToMySQLTest extends TestCase {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }).start();
+//            }).start();
 
         });
 

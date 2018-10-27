@@ -36,7 +36,7 @@ public class AppNormal
 //            PreparedStatement statement = connection.prepareStatement(sb.toString());
 //            statement.execute();
 //        }
-        File pathFile = new File("D:\\BaiduYunDownload\\20160319\\wifi");
+        File pathFile = new File("/media/hugh/Windows/Users/hugh/Downloads/数据");
 
         File[] files = pathFile.listFiles();
         LinkedList fileList = new LinkedList();
