@@ -74,12 +74,19 @@ public class DataLoader {
      * @param tableNames
      */
     public void addIndex(Queue<String> tableNames) {
+        String daliyTable = "";
         for (String tableName : tableNames) {
             try {
                 addIndexToTable(tableName);
+                daliyTable = tableName;
             } catch (SQLException e) {
                 LOGGER.error(String.format("Table %s add index failed.", tableName), e);
             }
+        }
+        try {
+            addIndexToTable(daliyTable.replaceAll("hour", "day").substring(0, daliyTable.length() - 3));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -222,7 +229,7 @@ public class DataLoader {
      * @throws SQLException
      */
     private void addIndexToTable(String tableName) throws SQLException {
-        LOGGER.info(String.format("Table %s add primary key (id) , index key (nas_port_id), index key (page_type)."));
+        LOGGER.info(String.format("Table %s add primary key (id) , index key (nas_port_id), index key (page_type).", tableName));
         PoolManager poolManager = PoolManager.getInstance();
         Connection connection = poolManager.getConnection();
         addIndexToTable(tableName, connection);
