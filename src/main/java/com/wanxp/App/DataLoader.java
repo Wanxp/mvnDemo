@@ -33,7 +33,7 @@ public class DataLoader {
             "    `username` varchar(50) DEFAULT NULL,\n" +
             "    `custom_name` varchar(50) DEFAULT NULL\n" +
             "    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n";//创建表格SQL后缀
-    private static String SQL_TRUNCATE_TABLE = " TRUNCATE TABLE ";
+    private static String SQL_DROP_TABLE = " DROP TABLE IF EXISTS ";
     private static String SQL_IMPORT_TABLE_PREFIEX = " LOAD DATA LOCAL INFILE 'datafile' INTO TABLE `";//导入数据SQL前缀
     private static String SQL_IMPORT_TABLE_SUFIX = "`\n" +
             "FIELDS TERMINATED BY ']  ['\n" +
@@ -63,6 +63,16 @@ public class DataLoader {
         tableNames = uploadHourData(pathFile.listFiles());
         uploadDaliyData(pathFile.listFiles());
         return tableNames;
+    }
+
+    public void addIndex(Queue<String> tableNames) {
+        for (String tableName : tableNames) {
+            try {
+                addIndexToTable(tableName);
+            } catch (SQLException e) {
+                LOGGER.error(String.format("Table %s add index failed.", tableName), e);
+            }
+        }
     }
 
     /**
@@ -101,8 +111,8 @@ public class DataLoader {
         Connection connection = poolManager.getConnection();
 
         String tabName = "pv_hour_" + file.getName().substring(file.getName().length() - TIME_LENGTH);
+        dropTable(tabName, connection);
         createTable(tabName, connection);
-        truncateTable(tabName, connection);
         com.mysql.jdbc.PreparedStatement jdbcPs = createPreparedStatement(tabName, connection);
         int line = 0;
         InputStream is = null;
@@ -137,8 +147,8 @@ public class DataLoader {
         return connection.createStatement().execute(SQL_CREATE_TABLE_PREFIX + tabName + SQL_CREATE_TABLE_SUBFIX);
     }
 
-    private boolean truncateTable(String tabName, Connection connection) throws SQLException {
-        return connection.createStatement().execute(SQL_TRUNCATE_TABLE + tabName);
+    private boolean dropTable(String tabName, Connection connection) throws SQLException {
+        return connection.createStatement().execute(SQL_DROP_TABLE + tabName);
 
     }
 
@@ -191,6 +201,19 @@ public class DataLoader {
     }
 
     /**
+     * 为表增加主键
+     * @param tableName
+     * @return
+     * @throws SQLException
+     */
+    private void addIndexToTable(String tableName) throws SQLException {
+        PoolManager poolManager = PoolManager.getInstance();
+        Connection connection = poolManager.getConnection();
+        addIndexToTable(tableName, connection);
+        poolManager.returnConnection(connection);
+    }
+
+    /**
      * 加载日数据
      * @param files
      */
@@ -202,21 +225,20 @@ public class DataLoader {
         String firstName = ((File) stream.findFirst().get()).getName();
         String daliyTableName = "pv_day_" + firstName.substring(firstName.length() - TIME_LENGTH, firstName.length() - 2);
         try {
+            dropTable(daliyTableName, connection);
             createTable(daliyTableName, connection);
-            truncateTable(daliyTableName, connection);
             Arrays.stream(files).filter(x ->
                     x.isFile() && (x.getName().lastIndexOf("portal.log.") > -1)
             ).forEach(file -> {
-                String tableName = "pv_hour_" + firstName.substring(firstName.length() - TIME_LENGTH);
+                String fileName = file.getName();
+                String tableName = "pv_hour_" + fileName.substring(fileName.length() - TIME_LENGTH);
                 try {
                     LOGGER.info(String.format("Table copying : %s to %s ", tableName, daliyTableName));
                     copyDataToDaliyTable(tableName, daliyTableName, connection);
-//                    addIndexToTable(tableName, connection);
                 } catch (SQLException e) {
                     LOGGER.error(String.format("copy %s to %s failed", tableName, daliyTableName), e);
                 }
             });
-//            addIndexToTable(daliyTableName, connection);
         } catch (SQLException e) {
             LOGGER.error(String.format("create %s failed", daliyTableName), e);
         }

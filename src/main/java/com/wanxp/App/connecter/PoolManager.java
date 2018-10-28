@@ -41,10 +41,7 @@ public class PoolManager implements Pool{
     static {
 
         pool = new DBConnectionPool(jdbcDriver, dbUrl, dbUserName, dbPassword);
-        LOGGER.info(String.format("[jdbcDriver]:%s\n" +
-                "[dbUrl]:%s\n" +
-                "[dbUserName]:%s\n" +
-                "[dbPassword]:%s\n", jdbcDriver, dbUrl, dbUserName, dbPassword));
+
     }
 
     @Override

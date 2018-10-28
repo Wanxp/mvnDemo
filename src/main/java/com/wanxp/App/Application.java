@@ -33,6 +33,7 @@ public class Application
         String firstTableName = "";
         //上传文件并分析数据
         Queue<String> tableNames = dataLoader.uploadData();
+        dataLoader.addIndex(tableNames);
         int i = 0;
         for (String tableName : tableNames) {
             DataAnalysiser dataAnalysiser = new DataAnalysiser(tableName);
@@ -65,24 +66,28 @@ public class Application
         try {
             InputStream in = new BufferedInputStream(new FileInputStream(configPath));
             properties.load(in);
+            String file_Path = properties.getProperty("filePath");
+            if (file_Path != null && !"".equals(file_Path))
+                filePath = file_Path;
+            String driver = properties.getProperty("jdbcDriver");
+            if (driver != null && !"".equals(driver))
+                jdbcDriver = driver;
+            String db_Url = properties.getProperty("dbUrl");
+            if (driver != null && !"".equals(db_Url))
+                dbUrl = db_Url;
+            String db_UserName = properties.getProperty("dbUserName");
+            if (driver != null && !"".equals(db_UserName))
+                dbUserName = db_UserName;
+            String db_Password = properties.getProperty("dbPassword");
+            if (driver != null && !"".equals(db_Password))
+                dbPassword = db_Password;
         } catch (Exception e) {
             LOGGER.error("propertiesFile cannot find, load default properties.", e);
         }
-        String file_Path = properties.getProperty("filePath");
-        if (file_Path != null && !"".equals(file_Path))
-            filePath = file_Path;
-        String driver = properties.getProperty("jdbcDriver");
-        if (driver != null && !"".equals(driver))
-            jdbcDriver = driver;
-        String db_Url = properties.getProperty("dbUrl");
-        if (driver != null && !"".equals(db_Url))
-            dbUrl = db_Url;
-        String db_UserName = properties.getProperty("dbUserName");
-        if (driver != null && !"".equals(db_UserName))
-            dbUserName = db_UserName;
-        String db_Password = properties.getProperty("dbPassword");
-        if (driver != null && !"".equals(db_Password))
-            dbPassword = db_Password;
+        LOGGER.info(String.format("\n[jdbcDriver]:%s\n" +
+                "[dbUrl]:%s\n" +
+                "[dbUserName]:%s\n" +
+                "[dbPassword]:%s\n", jdbcDriver, dbUrl, dbUserName, dbPassword));
     }
 
 
