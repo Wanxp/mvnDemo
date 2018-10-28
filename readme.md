@@ -4,12 +4,12 @@
 ![流程图](http://oo0ow3409.bkt.clouddn.com/%E6%96%87%E4%BB%B6%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 # 使用
 ## 运行jar包方式
-### 下载loaddata-0.1-release.jar
+### 下载[loaddata-0.1-release.jar](https://github.com/Wanxp/mvnDemo/releases/download/0.1-release/loaddata-0.1-release.jar)
 ### 参照以下方式创建属性文件
 ```text
-#导入的文件路径
-filePath=C:\\Users\\hugh\\Downloads\\数据
-#数据库驱动
+#需要导入的数据的所在文件夹,路径不能包含中文
+filePath=C:\\Users\\hugh\\Downloads\\data
+#数据库驱动,无需修改
 jdbcDriver=com.mysql.jdbc.Driver
 #数据库位置
 dbUrl=jdbc:mysql://localhost:32773/wifidb?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
