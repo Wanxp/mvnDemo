@@ -207,6 +207,7 @@ public class DataLoader {
      * @throws SQLException
      */
     private void addIndexToTable(String tableName) throws SQLException {
+        LOGGER.info(String.format("Table %s add primary key (id) , index key (nas_port_id), index key (page_type)."));
         PoolManager poolManager = PoolManager.getInstance();
         Connection connection = poolManager.getConnection();
         addIndexToTable(tableName, connection);
