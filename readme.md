@@ -20,7 +20,7 @@ dbPassword=0001
 ```
 ### 运行命令
 ```shell
-jar mvnDemo-0.1-release.jar 属性文件路径
+jar loaddata-0.1-release.jar 属性文件路径
 ```
 ## idea运行方式
 ### idea拉取代码
