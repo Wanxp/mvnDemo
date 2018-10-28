@@ -39,28 +39,7 @@ public class PoolManager implements Pool{
      * 初始化
      */
     static {
-        Properties properties = new Properties();
-        try {
-            String classpath = PoolManager.class.getResource("/").getPath();
-            InputStream in = new BufferedInputStream(new FileInputStream(System.getProperty("classpath") + "/dbconfig.properties"));
-            properties.load(in);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("dbconfig.properties cannot find, load default properties.", e);
-        } catch (IOException e) {
-            LOGGER.error("dbconfig.properties has fond, load default properties.", e);
-        }
-        String driver = properties.getProperty("jdbcDriver");
-        if (driver != null && !"".equals(driver))
-            jdbcDriver = driver;
-        String db_Url = properties.getProperty("dbUrl");
-        if (driver != null && !"".equals(db_Url))
-            dbUrl = db_Url;
-        String db_UserName = properties.getProperty("dbUserName");
-        if (driver != null && !"".equals(db_UserName))
-            dbUserName = db_UserName;
-        String db_Password = properties.getProperty("dbPassword");
-        if (driver != null && !"".equals(db_Password))
-            dbPassword = db_Password;
+
         pool = new DBConnectionPool(jdbcDriver, dbUrl, dbUserName, dbPassword);
         LOGGER.info(String.format("[jdbcDriver]:%s\n" +
                 "[dbUrl]:%s\n" +
