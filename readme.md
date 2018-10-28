@@ -24,6 +24,7 @@ jar mvnDemo-0.1-release.jar 属性文件路径
 ```
 ## idea运行方式
 ### idea拉取代码
+### 切换分支为release
 ### 导入pom
 ### 将\src\main\resource 右键mark为resource文件夹
 ### 修改 \src\main\resource\application.properties文件
