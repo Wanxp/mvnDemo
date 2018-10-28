@@ -50,13 +50,17 @@ public class DataLoader {
     private static String SQL_INSERT_INTO = " INSERT INTO ";
     private static String SQL_SELECT_FROM = " SELECT * FROM ";
 
-
+    //文件路径
     private String path = "";
     public DataLoader(String path) {
         this.path = path;
     }
 
 
+    /**
+     * 上传数据
+     * @return
+     */
     public Queue<String> uploadData() {
         Queue<String> tableNames = new LinkedList<>();
         File pathFile = new File(path);
@@ -65,6 +69,10 @@ public class DataLoader {
         return tableNames;
     }
 
+    /**
+     * 添加索引
+     * @param tableNames
+     */
     public void addIndex(Queue<String> tableNames) {
         for (String tableName : tableNames) {
             try {
@@ -147,6 +155,13 @@ public class DataLoader {
         return connection.createStatement().execute(SQL_CREATE_TABLE_PREFIX + tabName + SQL_CREATE_TABLE_SUBFIX);
     }
 
+    /**
+     * 若存在重复表则删除
+     * @param tabName
+     * @param connection
+     * @return
+     * @throws SQLException
+     */
     private boolean dropTable(String tabName, Connection connection) throws SQLException {
         return connection.createStatement().execute(SQL_DROP_TABLE + tabName);
 
@@ -248,6 +263,13 @@ public class DataLoader {
 
     }
 
+    /**
+     * 复制表数据
+     * @param sourceTableName
+     * @param targetTableName
+     * @param connection
+     * @throws SQLException
+     */
     private void copyDataToDaliyTable(String sourceTableName, String targetTableName, Connection connection) throws SQLException {
         String sql = SQL_INSERT_INTO + targetTableName + SQL_SELECT_FROM + sourceTableName;
         Statement statment = connection.createStatement();
