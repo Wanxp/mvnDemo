@@ -4,7 +4,7 @@
 ![流程图](http://oo0ow3409.bkt.clouddn.com/%E6%96%87%E4%BB%B6%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 # 使用
 ## 运行jar包方式
-### 下载mvnDemo-0.1-release.jar
+### 下载loaddata-0.1-release.jar
 ### 参照以下方式创建属性文件
 ```text
 #导入的文件路径
